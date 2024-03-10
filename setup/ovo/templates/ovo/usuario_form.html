@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} 
+
+{% if usuario.pk %}
+    Atualização de usuário
+{% else %}
+    Cadastro de usuário
+{% endif %}
+
+{% endblock title %}
+
+{% block content %}
+    {% if usuario.pk %}
+        <h1> Atualização de usuário </h1>
+    {% else %}
+        <h1>Cadastro de usuários</h1>
+    {% endif %}
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary"> Salvar </button>
+    </form>
+{% endblock content %}
+
+

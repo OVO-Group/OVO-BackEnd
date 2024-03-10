@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block title %}
+    Deletar Usuário
+{% endblock title %}
+
+{% block content %}
+    <h1>Deletar Usuário {{ usuario.nome_completo }}?</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Deletar</button>
+        <a href="{% url 'usuario_list' %}" class="btn btn-primary">Cancelar</a>
+    </form>
+{% endblock content %}
