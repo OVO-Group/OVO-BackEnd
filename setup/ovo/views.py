@@ -1,8 +1,6 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from .models import Usuario, Endereco
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -10,7 +8,7 @@ from django.db.models import Q
 import requests
 
 
-# Create your views here.
+#CRUD usuário
     
 
 class UserListView(APIView):
@@ -44,7 +42,7 @@ class UserDeleteView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
         
 
-#Endereco
+#CRUD Endereco
 
 
 class EnderecoListView(APIView):
@@ -75,3 +73,42 @@ class EnderecoDeleteView(APIView):
         endereco = get_object_or_404(Endereco, id_endereco=id_endereco)
         endereco.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)            
+    
+#Rotas de Login
+class LoginEmailView(APIView):
+    def post(self, request):
+        serializer = LoginEmailSeializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        email = serializer.validated_data['email']
+        user = Usuario.objects.filter(email=email).first()
+        if not user:
+            return Response({'message': 'E-mail não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UsuarioSerializer(user)
+        return Response(serializer.data)
+    
+class LoginCelularView(APIView):
+    def post(self, request):
+        serializer = LoginCelularSeializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        celular = serializer.validated_data['celular']
+        user = Usuario.objects.filter(celular=celular).first()
+        if not user:
+            return Response({'message': 'Celular não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UsuarioSerializer(user)
+        return Response(serializer.data)
+        
+        #Autenticação com Twilio
+
+
+class EnderecoUsuarioListView(APIView):
+    def get(self, request, id_usuario):
+        enderecos = Endereco.objects.filter(id_usuario=id_usuario)
+        serializer = EnderecoSerializer(enderecos, many=True)
+        
+        return Response(serializer.data)
