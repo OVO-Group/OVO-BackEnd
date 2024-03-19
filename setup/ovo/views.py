@@ -110,6 +110,7 @@ class EnderecoUsuarioListView(APIView):
     def get(self, request, id_usuario):
         enderecos = Endereco.objects.filter(id_usuario=id_usuario)
         serializer = EnderecoSerializer(enderecos, many=True)
+        print(serializer)
         
         return Response(serializer.data)
     
@@ -118,9 +119,13 @@ class EnderecoUsuarioListView(APIView):
     
 class RestauranteListView(APIView):
     def get(self, request):
-        queryset = Restaurante.objects.all()
-        print(queryset)
-        serializer = RestauranteSerializer(queryset, many=True)
-        print(serializer)
-
+        restaurante = Restaurante.objects.all()
+        serializer = RestauranteSerializer(restaurante, many=True)
         return Response(serializer.data)
+    
+class ProdutoListView(APIView):
+    def get(self, request, id_restaurante):
+        produto = Produto.objects.filter(id_restaurante=id_restaurante)
+        serializer = ProdutoSerializer(produto, many=True)
+        return Response(serializer.data)
+

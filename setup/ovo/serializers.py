@@ -17,12 +17,12 @@ class LoginEmailSeializer(serializers.Serializer): ###
 class LoginCelularSeializer(serializers.Serializer): ###
     celular = serializers.CharField()
 
-class RestauranteSerializer(serializers.Serializer):
+class RestauranteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurante
         fields = ['id_restaurante', 'nome_restaurante', 'sobre', 'endereco', 'cnpj', 'horario_funcionamento', 'id_tipo_entrega']
 
-class ProdutoSerializer(serializers.Serializer):
+class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
         fields = ['id_produto', 'nome', 'descricao', 'preco', 'id_restaurante']
