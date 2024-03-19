@@ -1,6 +1,6 @@
-from .models import Usuario, Endereco
+from .models import Usuario, Endereco, Restaurante, Produto
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -111,4 +111,16 @@ class EnderecoUsuarioListView(APIView):
         enderecos = Endereco.objects.filter(id_usuario=id_usuario)
         serializer = EnderecoSerializer(enderecos, many=True)
         
+        return Response(serializer.data)
+    
+
+# Rotas de consulta (Restaurante e produtos)
+    
+class RestauranteListView(APIView):
+    def get(self, request):
+        queryset = Restaurante.objects.all()
+        print(queryset)
+        serializer = RestauranteSerializer(queryset, many=True)
+        print(serializer)
+
         return Response(serializer.data)
