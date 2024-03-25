@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-
+#ALTERAR PARA ABSTRACT_USER
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     nome_completo = models.CharField(max_length = 45, null = False, blank = False, )

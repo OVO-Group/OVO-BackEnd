@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView, EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView, LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, VerificaCodigo
+from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
+    EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
+    LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
+    ProdutoListView
 
 
 urlpatterns = [
@@ -28,9 +31,8 @@ urlpatterns = [
     path('login/email', LoginEmailView.as_view(), name='login_email'),
 #login por celular
     path('login/celular', LoginCelularView.as_view(), name='login_celular'),
-    
-    
-    path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
-
-    
+#listar restaurantes
+    path('restaurante/', RestauranteListView.as_view(), name='restaurantes'),
+#listar produtos
+    path('produtos/<int:id_restaurante>', ProdutoListView.as_view(), name='produtos'),
 ]
