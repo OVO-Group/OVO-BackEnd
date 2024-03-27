@@ -100,20 +100,23 @@ class LoginEmailView(APIView):
         codigo = gerar_e_enviar_codigo(emailUsuario)
 
         request.session['codigo_verificacao'] = codigo
+        request.session['email_usuario'] = email
 
         return Response("Email Enviado!")
     
 class VerificaCodigo(APIView):
-    def get(self, request):
+    def post(self, request):
         codigoGerado = request.session.get('codigo_verificacao')
         codigoUsuario = request.data["codigo"]
-        
-        if codigoUsuario == codigoGerado:
-            return HttpResponse('Logado!')
-        
-        return HttpResponse('')
-    
+        emailUsuario = request.session.get('email_usuario')
 
+        if codigoUsuario == codigoGerado:
+            user = Usuario.objects.filter(email=emailUsuario).first()
+            if user:
+                return Response({'user_data': {'id': user.id_usuario, 'email': user.email}})
+            else:
+                return Response({'message': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        return Response('Código de verificação inválido')
 
 class LoginCelularView(APIView):
     def post(self, request):
