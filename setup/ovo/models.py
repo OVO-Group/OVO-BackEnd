@@ -20,7 +20,7 @@ class Usuario(AbstractUser):
     # Adicione campos adicionais se necessário
 
     def __str__(self):
-        return self.nome_completo
+        return self.first_name
 
     class Meta:
         # Define um nome amigável para o modelo de usuário personalizado

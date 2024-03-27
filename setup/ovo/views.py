@@ -6,8 +6,9 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 import requests
-
-
+from random import randint
+from django.http import HttpResponse
+from django.core.mail import send_mail
 #CRUD usuário
     
 
@@ -75,9 +76,18 @@ class EnderecoDeleteView(APIView):
         return Response("Usúario deletado com sucesso")            
     
 #Rotas de Login
+
+#Gera código de verificação e envia email
+def gerar_e_enviar_codigo(email):
+    numeros = [str(randint(0, 9)) for _ in range(6)]
+    codigo = ''.join(numeros)
+    send_mail('Código de Verificação DJANGO', f'Código de verificação é {codigo}', 'gabrielduartecarneiro@gmail.com', [email])
+    return codigo
+
 class LoginEmailView(APIView):
     def post(self, request):
         serializer = LoginEmailSeializer(data=request.data)
+        print(request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -85,10 +95,26 @@ class LoginEmailView(APIView):
         user = Usuario.objects.filter(email=email).first()
         if not user:
             return Response({'message': 'E-mail não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        emailUsuario = request.data["email"]
+        codigo = gerar_e_enviar_codigo(emailUsuario)
 
-        serializer = UsuarioSerializer(user)
-        return Response(serializer.data)
+        request.session['codigo_verificacao'] = codigo
+
+        return Response("Email Enviado!")
     
+class VerificaCodigo(APIView):
+    def get(self, request):
+        codigoGerado = request.session.get('codigo_verificacao')
+        codigoUsuario = request.data["codigo"]
+        
+        if codigoUsuario == codigoGerado:
+            return HttpResponse('Logado!')
+        
+        return HttpResponse('')
+    
+
+
 class LoginCelularView(APIView):
     def post(self, request):
         serializer = LoginCelularSeializer(data=request.data)
@@ -113,19 +139,3 @@ class EnderecoUsuarioListView(APIView):
         print(serializer)
         
         return Response(serializer.data)
-    
-
-# Rotas de consulta (Restaurante e produtos)
-    
-class RestauranteListView(APIView):
-    def get(self, request):
-        restaurante = Restaurante.objects.all()
-        serializer = RestauranteSerializer(restaurante, many=True)
-        return Response(serializer.data)
-    
-class ProdutoListView(APIView):
-    def get(self, request, id_restaurante):
-        produto = Produto.objects.filter(id_restaurante=id_restaurante)
-        serializer = ProdutoSerializer(produto, many=True)
-        return Response(serializer.data)
-
