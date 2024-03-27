@@ -151,3 +151,17 @@ class ProdutoListView(APIView):
         produto = Produto.objects.filter(id_restaurante=id_restaurante)
         serializer = ProdutoSerializer(produto, many=True)
         return Response(serializer.data)
+    
+class RestauranteCreateView(APIView):
+    def post(self, request):
+        serializer = RestauranteSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+        return Response(serializer.data)
+    
+class RestauranteDeleteView(APIView):
+    def delete(self, request, id_restaurante):
+        restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
+        restaurante.delete()
+        return Response("Restaurante deletado com sucesso")
+        
