@@ -93,9 +93,10 @@ class LoginEmailView(APIView):
 
         email = serializer.validated_data['email']
         user = Usuario.objects.filter(email=email).first()
+        '''
         if not user:
             return Response({'message': 'E-mail não encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
+        '''
         emailUsuario = request.data["email"]
         codigo = gerar_e_enviar_codigo(emailUsuario)
 
@@ -167,4 +168,19 @@ class RestauranteDeleteView(APIView):
         restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
         restaurante.delete()
         return Response("Restaurante deletado com sucesso")
+    
+class GetRestauranteView(APIView):
+    def get(self, request, id_restaurante):
+        restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
+        serializer = RestauranteSerializer(restaurante)
+        return Response(serializer.data)
+    
+class RestauranteEditView(APIView):
+    def put(self, request, id_restaurante):
+        restaurante = Restaurante.objects.get(pk=id_restaurante)
+        serializer = RestauranteSerializer(restaurante, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
