@@ -3,7 +3,7 @@ from django.urls import path
 from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
     EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
     LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
-    ProdutoListView, RestauranteCreateView, RestauranteDeleteView
+    ProdutoListView
 
 
 urlpatterns = [
@@ -39,4 +39,7 @@ urlpatterns = [
     path('restaurante/deletar/<int:id_restaurante>', RestauranteDeleteView.as_view(), name="Deletar_restaurante"), 
 #listar produtos
     path('produtos/<int:id_restaurante>', ProdutoListView.as_view(), name='produtos'),
+#verificar codigo do email    
+    path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo')
+
 ]
