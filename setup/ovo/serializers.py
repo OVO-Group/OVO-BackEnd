@@ -4,7 +4,7 @@ from .models import Usuario, Endereco, Restaurante, Produto
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id_usuario', 'nome_completo', 'cpf', 'email', 'celular']
+        fields = ['id_usuario', 'first_name','last_name','cpf', 'email', 'celular']
 
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:

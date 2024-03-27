@@ -72,7 +72,7 @@ class EnderecoDeleteView(APIView):
     def delete(self, request, id_endereco):
         endereco = get_object_or_404(Endereco, id_endereco=id_endereco)
         endereco.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)            
+        return Response("Usúario deletado com sucesso")            
     
 #Rotas de Login
 class LoginEmailView(APIView):
