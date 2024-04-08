@@ -5,7 +5,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
     ProdutoListView, VerificaCodigo, GetRestauranteView, RestauranteCreateView,\
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
-    ProdutoEditView
+    ProdutoEditView, GetProdutoView
     
 
 
@@ -46,12 +46,14 @@ urlpatterns = [
     path('restaurante/editar/<int:id_restaurante>', RestauranteEditView.as_view(), name='Editar_restaurante'),
 #listar produtos
     path('produtos/<int:id_restaurante>', ProdutoListView.as_view(), name='produtos'),
+#listar um produto específico
+    path('produto/<int:id_produto>', GetProdutoView.as_view(), name='get_produto'),
 #criar produtos
     path('produto/criar', ProdutoCreateView.as_view(), name='Criar_produto'),
 #Deletar produtos
     path('produto/deletar/<int:id_produto>', ProdutoDeleteView.as_view(), name="Deletar_produto"), 
 #editar produtos
-    path('produto/editar/<int:id_prouto>', ProdutoEditView.as_view(), name='Editar_produto'),
+    path('produto/editar/<int:id_produto>', ProdutoEditView.as_view(), name='Editar_produto'),
 #verificar codigo do email    
     path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo')
 ]
