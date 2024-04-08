@@ -150,12 +150,6 @@ class RestauranteListView(APIView):
         serializer = RestauranteSerializer(restaurante, many=True)
         return Response(serializer.data)
     
-class ProdutoListView(APIView):
-    def get(self, request, id_restaurante):
-        produto = Produto.objects.filter(id_restaurante=id_restaurante)
-        serializer = ProdutoSerializer(produto, many=True)
-        return Response(serializer.data)
-    
 class RestauranteCreateView(APIView):
     def post(self, request):
         serializer = RestauranteSerializer(data=request.data)
@@ -183,4 +177,31 @@ class RestauranteEditView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+    
+class ProdutoListView(APIView):
+    def get(self, request, id_restaurante):
+        produto = Produto.objects.filter(id_restaurante=id_restaurante)
+        serializer = ProdutoSerializer(produto, many=True)
+        return Response(serializer.data)
+
+class ProdutoCreateView(APIView):
+    def post(self, request):
+        serializer = ProdutoSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+        return Response(serializer.data)
+    
+class ProdutoDeleteView(APIView):
+    def delete(self, request, id_produto):
+        produto = get_object_or_404(Produto, id_produto=id_produto)
+        produto.delete()
+        return Response("produto deletado com sucesso")
+    
+class ProdutoEditView(APIView):
+    def put(self, request, id_produto):
+        produto = Produto.objects.get(pk=id_produto)
+        serializer = ProdutoSerializer(produto, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
