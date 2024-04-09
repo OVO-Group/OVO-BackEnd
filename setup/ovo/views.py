@@ -9,6 +9,9 @@ import requests
 from random import randint
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 #CRUD usuário
     
 
@@ -87,13 +90,12 @@ def gerar_e_enviar_codigo(email):
 class LoginEmailView(APIView):
     def post(self, request):
         serializer = LoginEmailSeializer(data=request.data)
-        print(request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         email = serializer.validated_data['email']
-        user = Usuario.objects.filter(email=email).first()
         '''
+        user = Usuario.objects.filter(email=email).first()
         if not user:
             return Response({'message': 'E-mail não encontrado'}, status=status.HTTP_404_NOT_FOUND)
         '''
@@ -103,20 +105,24 @@ class LoginEmailView(APIView):
         request.session['codigo_verificacao'] = codigo
         request.session['email_usuario'] = email
 
-        return Response("Email Enviado!")
+        return Response({"mensagem":"Email Enviado!", "codigo_verificacao": codigo})
     
 class VerificaCodigo(APIView):
     def post(self, request):
-        codigoGerado = request.session.get('codigo_verificacao')
-        codigoUsuario = request.data["codigo"]
-        emailUsuario = request.session.get('email_usuario')
+        #codigoGerado = request.session.get('codigo_verificacao')
+        codigo_usuario = request.data["codigo"]
+        cod_enviado = request.data["cod_enviado"]
+        email = request.data["email"]
+        print(request)
 
-        if codigoUsuario == codigoGerado:
-            user = Usuario.objects.filter(email=emailUsuario).first()
+        if codigo_usuario == cod_enviado:
+            user = Usuario.objects.filter(email=email).first()
             if user:
-                return Response({'user_data': {'id': user.id_usuario, 'email': user.email}})
+                refresh = RefreshToken.for_user(user)
+                token = str(refresh.access_token)
+                return Response({'user_data': {'id': user.id_usuario, 'email': user.email, 'token': token}})
             else:
-                return Response({'message': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+                return Response('usuário não cadastrado')
         return Response('Código de verificação inválido')
 
 class LoginCelularView(APIView):

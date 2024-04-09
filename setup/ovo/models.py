@@ -102,3 +102,5 @@ class Pedido(models.Model):
     valor_final = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     frete = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
+
+
