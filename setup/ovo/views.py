@@ -154,3 +154,15 @@ class ProdutoListView(APIView):
         produto = Produto.objects.filter(id_restaurante=id_restaurante)
         serializer = ProdutoSerializer(produto, many=True)
         return Response(serializer.data)
+
+
+class VerificaEmail(APIView):
+    def post(self, request):
+        email = request.body.decode('utf-8')
+        user = Usuario.objects.filter(email=email).first()
+        if not user:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_200_OK)
+        #email = request.data.get("email")
+        #user = Usuario.objects.filter(email=email).first()

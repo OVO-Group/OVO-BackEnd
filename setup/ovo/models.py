@@ -89,10 +89,16 @@ class TipoPagamento(models.Model):
     id_tipo_pagamento = models.AutoField(primary_key=True)
     nome= models.CharField(max_length=45, null=False, blank=False)
 
+    def __str__(self):
+        return self.nome
+
 class Comanda(models.Model):
     id_comanda = models.AutoField(primary_key=True)
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)
     quantidade = models.IntegerField(null=False, blank=False)
+    
+    def __str__(self):
+        return self.quantidade
 
 class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
@@ -102,3 +108,7 @@ class Pedido(models.Model):
     valor_final = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     frete = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
+    id_comanda = models.ForeignKey(Comanda, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return self.valor_final
