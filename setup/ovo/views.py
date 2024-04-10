@@ -9,6 +9,9 @@ import requests
 from random import randint
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 #CRUD usuário
     
 
@@ -87,35 +90,39 @@ def gerar_e_enviar_codigo(email):
 class LoginEmailView(APIView):
     def post(self, request):
         serializer = LoginEmailSeializer(data=request.data)
-        print(request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         email = serializer.validated_data['email']
+        '''
         user = Usuario.objects.filter(email=email).first()
         if not user:
             return Response({'message': 'E-mail não encontrado'}, status=status.HTTP_404_NOT_FOUND)
-        
+        '''
         emailUsuario = request.data["email"]
         codigo = gerar_e_enviar_codigo(emailUsuario)
 
         request.session['codigo_verificacao'] = codigo
         request.session['email_usuario'] = email
 
-        return Response("Email Enviado!")
+        return Response({"mensagem":"Email Enviado!", "codigo_verificacao": codigo})
     
 class VerificaCodigo(APIView):
     def post(self, request):
-        codigoGerado = request.session.get('codigo_verificacao')
-        codigoUsuario = request.data["codigo"]
-        emailUsuario = request.session.get('email_usuario')
+        #codigoGerado = request.session.get('codigo_verificacao')
+        codigo_usuario = request.data["codigo"]
+        cod_enviado = request.data["cod_enviado"]
+        email = request.data["email"]
+        print(request)
 
-        if codigoUsuario == codigoGerado:
-            user = Usuario.objects.filter(email=emailUsuario).first()
+        if codigo_usuario == cod_enviado:
+            user = Usuario.objects.filter(email=email).first()
             if user:
-                return Response({'user_data': {'id': user.id_usuario, 'email': user.email}})
+                refresh = RefreshToken.for_user(user)
+                token = str(refresh.access_token)
+                return Response({'user_data': {'id': user.id_usuario, 'email': user.email, 'token': token}})
             else:
-                return Response({'message': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+                return Response('usuário não cadastrado')
         return Response('Código de verificação inválido')
 
 class LoginCelularView(APIView):
@@ -149,6 +156,40 @@ class RestauranteListView(APIView):
         serializer = RestauranteSerializer(restaurante, many=True)
         return Response(serializer.data)
     
+class RestauranteCreateView(APIView):
+    def post(self, request):
+        serializer = RestauranteSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+        return Response(serializer.data)
+    
+class RestauranteDeleteView(APIView):
+    def delete(self, request, id_restaurante):
+        restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
+        restaurante.delete()
+        return Response("Restaurante deletado com sucesso")
+    
+class GetRestauranteView(APIView):
+    def get(self, request, id_restaurante):
+        restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
+        serializer = RestauranteSerializer(restaurante)
+        return Response(serializer.data)
+    
+class RestauranteEditView(APIView):
+    def put(self, request, id_restaurante):
+        restaurante = Restaurante.objects.get(pk=id_restaurante)
+        serializer = RestauranteSerializer(restaurante, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetProdutoView(APIView):
+    def get(self, request, id_produto):
+        produto = get_object_or_404(Produto, id_produto=id_produto)
+        serializer = ProdutoSerializer(produto)
+        return Response(serializer.data)
+
 class ProdutoListView(APIView):
     def get(self, request, id_restaurante):
         produto = Produto.objects.filter(id_restaurante=id_restaurante)
@@ -166,3 +207,26 @@ class VerificaEmail(APIView):
             return Response(status=status.HTTP_200_OK)
         #email = request.data.get("email")
         #user = Usuario.objects.filter(email=email).first()
+        
+class ProdutoCreateView(APIView):
+    def post(self, request):
+        serializer = ProdutoSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+        return Response(serializer.data)
+    
+class ProdutoDeleteView(APIView):
+    def delete(self, request, id_produto):
+        produto = get_object_or_404(Produto, id_produto=id_produto)
+        produto.delete()
+        return Response("produto deletado com sucesso")
+    
+class ProdutoEditView(APIView):
+    def put(self, request, id_produto):
+        print(request.data)
+        produto = Produto.objects.get(id_produto=id_produto)
+        serializer = ProdutoSerializer(produto, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
