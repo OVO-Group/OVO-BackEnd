@@ -3,14 +3,11 @@ from django.urls import path
 from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
     EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
     LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
-<<<<<<< HEAD
-    ProdutoListView, VerificaCodigo, VerificaEmail
-=======
+    ProdutoListView, VerificaCodigo, VerificaEmail,\
     ProdutoListView, VerificaCodigo, GetRestauranteView, RestauranteCreateView,\
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
     ProdutoEditView, GetProdutoView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
->>>>>>> 34bdba7ace68c57359af5c4c929d0fdc2c37f765
 
 
 urlpatterns = [
@@ -62,13 +59,10 @@ urlpatterns = [
 #editar produtos
     path('produto/editar/<int:id_produto>', ProdutoEditView.as_view(), name='Editar_produto'),
 #verificar codigo do email    
-<<<<<<< HEAD
     path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
 
-    path('verifica/email', VerificaEmail.as_view(), name='verifica_email')
-=======
-    path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo')
+    path('verifica/email', VerificaEmail.as_view(), name='verifica_email'),
+    path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
 ]
 
->>>>>>> 34bdba7ace68c57359af5c4c929d0fdc2c37f765
 

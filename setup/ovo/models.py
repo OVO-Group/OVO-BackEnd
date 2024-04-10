@@ -108,12 +108,9 @@ class Pedido(models.Model):
     valor_final = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     frete = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
-<<<<<<< HEAD
     id_comanda = models.ForeignKey(Comanda, on_delete = models.CASCADE)
 
     def __str__(self):
         return self.valor_final
-=======
 
 
->>>>>>> 34bdba7ace68c57359af5c4c929d0fdc2c37f765

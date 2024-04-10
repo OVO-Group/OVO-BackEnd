@@ -120,7 +120,7 @@ class VerificaCodigo(APIView):
             if user:
                 refresh = RefreshToken.for_user(user)
                 token = str(refresh.access_token)
-                return Response({'user_data': {'id': user.id_usuario, 'email': user.email, 'token': token}})
+                return Response({'user_data': {'id_usuario': user.id_usuario, 'email': user.email, 'token': token}})
             else:
                 return Response('usuário não cadastrado')
         return Response('Código de verificação inválido')
@@ -207,7 +207,7 @@ class VerificaEmail(APIView):
             return Response(status=status.HTTP_200_OK)
         #email = request.data.get("email")
         #user = Usuario.objects.filter(email=email).first()
-        
+
 class ProdutoCreateView(APIView):
     def post(self, request):
         serializer = ProdutoSerializer(data=request.data)
