@@ -6,7 +6,9 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoListView, VerificaCodigo, VerificaEmail,\
     ProdutoListView, VerificaCodigo, GetRestauranteView, RestauranteCreateView,\
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
-    ProdutoEditView, GetProdutoView
+    ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
+    ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
+    TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -60,9 +62,36 @@ urlpatterns = [
     path('produto/editar/<int:id_produto>', ProdutoEditView.as_view(), name='Editar_produto'),
 #verificar codigo do email    
     path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
-
+#verificação de email
     path('verifica/email', VerificaEmail.as_view(), name='verifica_email'),
+#verificação de login
     path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
+
+    path('comanda/<id_comanda>', ComandaListView.as_view(), name='comanda'),
+
+    path('comanda/criar', ComandaCreateView.as_view(), name='cria_comanda'),
+
+    path('comanda/editar/<id_comanda>', ComandaUpdateView.as_view(), name='edita_comanda'),
+
+    path('comanda/deletar/<id_comanda>', ComandaDeleteView.as_view(), name='deleta_comanda'),
+
+    path('tipo_pagamento/<id_tipo_pagamento>', TipoPagamentoListView.as_view(), name='tipo_pagamento'),
+
+    path('tipo_pagamento/criar', TipoPagamentoCreateVIew.as_view(), name='criar_tipo_pagamento'),
+
+    path('tipo_pagamento/editar/<id_tipo_pagamento>', TipoPagamentoUpdateView.as_view(), name='editar_tipo_pagamento'),
+
+    path('tipo_pagamento/deletar/<id_tipo_pagamento>', TipoPagamentoDeleteView.as_view(), name='deletar_tipo_pagamento'),
+
+    path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
+
+    path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
+
+    path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
+
+    path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
+
+
 ]
 
 

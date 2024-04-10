@@ -1,6 +1,6 @@
-from .models import Usuario, Endereco, Restaurante, Produto
+from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -230,3 +230,95 @@ class ProdutoEditView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ComandaListView(APIView):
+    def get(self, request, id_comanda):
+        comanda = get_object_or_404(Comanda, id_comanda=id_comanda)
+        serializer = ComandaSerializer(comanda)
+        
+        return Response(serializer.data) 
+    
+class ComandaCreateView(APIView):
+    def post(self, request):
+        serializer = ComandaSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+
+        return Response(serializer.data)
+    
+class ComandaUpdateView(APIView):
+    def put(self, request, id_comanda):
+        comanda = get_object_or_404(Comanda, id_comanda=id_comanda)
+        serializer = ComandaSerializer(comanda, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+class ComandaDeleteView(APIView):
+    def delete(self, request, id_comanda):
+        comanda = get_object_or_404(Comanda, id_comanda=id_comanda)
+        comanda.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class TipoPagamentoListView(APIView):
+    def get(self, request, id_tipo_pagamento):
+        tipo_pagamento = get_object_or_404(TipoPagamento, id_tipo_pagamento=id_tipo_pagamento)
+        serializer = TipoPagamentoSerializer(tipo_pagamento)
+
+        return Response(serializer.data)
+    
+class TipoPagamentoCreateVIew(APIView):
+    def post(self, request):
+        serializer = TipoPagamentoSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+
+        return Response(serializer.data)
+    
+class TipoPagamentoUpdateView(APIView):
+    def put(self, request, id_tipo_pagamento):
+        tipo_pagamento = get_object_or_404(TipoPagamento, id_tipo_pagamento=id_tipo_pagamento)
+        serializer = TipoPagamentoSerializer(tipo_pagamento, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    
+class TipoPagamentoDeleteView(APIView):
+    def delete(self, request, id_tipo_pagamento):
+        tipo_pagamento = get_object_or_404(TipoPagamento, id_tipo_pagamento=id_tipo_pagamento)
+        tipo_pagamento.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class PedidoListView(APIView):
+    def get(self, request, id_pedido):
+        pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+        serializer = PedidoSerializer(pedido)
+        return Response(serializer.data)
+    
+class PedidoCreateView(APIView):
+    def post(self, request):
+        serializer = PedidoSerializer(data=request.data)
+        serializer.is_valid(raise_exception="True")
+        serializer.save()
+        return Response(serializer.data)
+    
+class PedidoUpdateView(APIView):
+    def put(self, request, id_pedido):
+        pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+        serializer = PedidoSerializer(pedido, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class PedidoDeleteView(APIView):
+    def delete(self, request, id_pedido):
+        pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+        pedido.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
