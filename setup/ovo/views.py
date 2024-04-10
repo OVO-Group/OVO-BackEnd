@@ -24,10 +24,19 @@ class UserListView(APIView):
 
 class UserCreateView(APIView):
     def post(self, request):
-        serializer = UsuarioSerializer(data=request.data)
-        serializer.is_valid(raise_exception="True")
-        serializer.save()
-        return Response(serializer.data)
+        data = request.data
+        user = Usuario.objects.filter(email=data['email']).first()
+        if not user:
+            serializer = UsuarioSerializer(data=request.data)
+            serializer.is_valid(raise_exception="True")
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)             
+        else:
+            serializer = UsuarioSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserUpdateView(APIView):
     def put(self, request, id_usuario):
@@ -94,6 +103,8 @@ class LoginEmailView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         email = serializer.validated_data['email']
+
+            
         '''
         user = Usuario.objects.filter(email=email).first()
         if not user:
@@ -118,9 +129,7 @@ class VerificaCodigo(APIView):
         if codigo_usuario == cod_enviado:
             user = Usuario.objects.filter(email=email).first()
             if user:
-                refresh = RefreshToken.for_user(user)
-                token = str(refresh.access_token)
-                return Response({'user_data': {'id_usuario': user.id_usuario, 'email': user.email, 'token': token}})
+                return Response({'user_data': {'id_usuario': user.id_usuario, 'email': user.email}})
             else:
                 return Response('usuário não cadastrado')
         return Response('Código de verificação inválido')
@@ -202,7 +211,11 @@ class VerificaEmail(APIView):
         email = request.body.decode('utf-8')
         user = Usuario.objects.filter(email=email).first()
         if not user:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            data = {'email':email}
+            serializer = UsuarioSerializer(data=data)
+            serializer.is_valid(raise_exception="True")
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)             
         else:
             return Response(status=status.HTTP_200_OK)
         #email = request.data.get("email")

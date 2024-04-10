@@ -5,11 +5,11 @@ from django.contrib.auth.models import AbstractUser
 #ALTERAR PARA ABSTRACT_USER
 class Usuario(AbstractUser):
     id_usuario = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=45, null=False, blank=False)
-    last_name = models.CharField(max_length=45, null=False, blank=False)
-    cpf = models.CharField(max_length=14, unique=True, null=False, blank=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    celular = models.CharField(max_length=15, unique=True, null=False, blank=False)
+    first_name = models.CharField(max_length=45, null=True, blank=True)
+    last_name = models.CharField(max_length=45, null=True, blank=True)
+    cpf = models.CharField(max_length=14, unique=True, null=True, blank=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    celular = models.CharField(max_length=15, unique=True, null=True, blank=True)
     password = models.CharField(max_length=20, null=True, blank=True)
     last_login = models.CharField(max_length=30, null=True, blank=True)
     is_superuser = models.CharField(max_length=1, null=True, blank=True)
@@ -108,7 +108,7 @@ class Pedido(models.Model):
     valor_final = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     frete = models.DecimalField(null = False, max_digits=10, decimal_places=2)
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
-    id_comanda = models.ForeignKey(Comanda, on_delete = models.CASCADE)
+    id_comanda = models.ForeignKey(Comanda, null = True ,on_delete = models.CASCADE)
 
     def __str__(self):
         return self.valor_final
