@@ -16,8 +16,8 @@ from rest_framework.permissions import AllowAny
     
 
 class UserListView(APIView):
-    def get(self, request, id_usuario):
-        user = get_object_or_404(Usuario, id_usuario=id_usuario)
+    def get(self, request, email):
+        user = get_object_or_404(Usuario, email = email)
         serializer = UsuarioSerializer(user)
         
         return Response(serializer.data)
@@ -56,13 +56,18 @@ class UserDeleteView(APIView):
         
 
 #CRUD Endereco
-
+class GetEnderecoView(APIView):
+    def get(self, request, id_endereco):
+        endereco = get_object_or_404(Endereco, id_endereco = id_endereco)
+        serializer = EnderecoSerializer(endereco)
+        return Response(serializer.data)
 
 class EnderecoListView(APIView):
-    def get(self, request, id_endereco):
-        endereco = get_object_or_404(Endereco, id_endereco=id_endereco)
-        serializer = EnderecoSerializer(endereco)
-        
+    def get(self, request, email):
+        print(email)
+        usuario = Usuario.objects.get(email = email)
+        enderecos = Endereco.objects.filter(id_usuario = usuario.id_usuario)
+        serializer = EnderecoSerializer(enderecos, many = True)
         return Response(serializer.data)
     
 class EnderecoCreateView(APIView):
@@ -75,7 +80,9 @@ class EnderecoCreateView(APIView):
 class EnderecoUpdateView(APIView):
     def put(self, request, id_endereco):
         endereco = get_object_or_404(Endereco, id_endereco=id_endereco)
+        print(request.data)
         serializer = EnderecoSerializer(endereco, data=request.data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
