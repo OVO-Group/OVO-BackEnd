@@ -8,7 +8,8 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
-    TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView
+    TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
+    GetEnderecoView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -19,7 +20,7 @@ urlpatterns = [
 #Admin
     path('admin/', admin.site.urls),
 #listar usuário por id usuário
-    path('listar/<int:id_usuario>', UserListView.as_view(), name='usuario_list'),
+    path('listar/<str:email>', UserListView.as_view(), name='usuario_list'),
 #cadastrar usuário
     path('cadastrar/', UserCreateView.as_view(), name='usuario_cadastro'),
 #atualizar usuário por id usuário
@@ -28,10 +29,11 @@ urlpatterns = [
     path('deletar/<int:id_usuario>', UserDeleteView.as_view(), name='usuario_deleta'),
 #listar endereço por id endereço
     #path('listar/endereco/<int:id_endereco>', EnderecoListView.as_view(), name='endereco_list'),
+    path('getendereco/<int:id_endereco>', GetEnderecoView.as_view(), name='get_endereco'),
 #listar endereço por id usuário
-    path('listar/endereco-usuario/<int:id_usuario>', EnderecoUsuarioListView.as_view(), name='endereco_usuario_list'),
+    path('endereco/<str:email>', EnderecoListView.as_view(), name='endereco_list'),
 #cadastrar endereco
-    path('cadastrar/endereco/', EnderecoCreateView.as_view(), name='endereco_cadastro'),
+    path('cadastrar/endereco', EnderecoCreateView.as_view(), name='endereco_cadastro'),
 #atualizar endereco por id endereco
     path('atualizar/endereco/<int:id_endereco>', EnderecoUpdateView.as_view(), name='endereco_atualiza'),
 #deletar endereco por id endereco
@@ -90,6 +92,8 @@ urlpatterns = [
     path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
 
     path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
+
+
 
 
 ]
