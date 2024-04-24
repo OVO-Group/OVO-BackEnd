@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
+from django.core import serializers
 #CRUD usuário
     
 
@@ -250,7 +251,21 @@ class ProdutoEditView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ComandaCreateView(APIView):
+    def post(self, request):
+        dados = request.data 
 
+       
+        dados_comanda = {'produtos': dados}
+
+        serializer = ComandaSerializer(data=dados_comanda)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        else:
+            return Response(serializer.errors, status=400)
+    
 
 class ComandaListView(APIView):
     def get(self, request, id_comanda):
@@ -259,14 +274,7 @@ class ComandaListView(APIView):
         
         return Response(serializer.data) 
     
-class ComandaCreateView(APIView):
-    def post(self, request):
-        serializer = ComandaSerializer(data=request.data)
-        serializer.is_valid(raise_exception="True")
-        serializer.save()
 
-        return Response(serializer.data)
-    
 class ComandaUpdateView(APIView):
     def put(self, request, id_comanda):
         comanda = get_object_or_404(Comanda, id_comanda=id_comanda)
@@ -322,9 +330,46 @@ class PedidoListView(APIView):
 class PedidoCreateView(APIView):
     def post(self, request):
         serializer = PedidoSerializer(data=request.data)
+        print(serializer)
         serializer.is_valid(raise_exception="True")
         serializer.save()
-        return Response(serializer.data)
+
+
+        dados = request.data
+
+        id_usuario = dados.get('id_usuario')
+        usuario = Usuario.objects.get(id_usuario=id_usuario)
+
+        id_comanda = dados.get('id_comanda')
+        print(id_comanda)
+        comanda = Comanda.objects.get(id_comanda=id_comanda)
+
+        id_restaurante = dados.get('id_restaurante')
+        restaurante = Restaurante.objects.get(id_restaurante=id_restaurante)
+
+        status = dados.get('status')
+
+        valor_final = dados.get('valor_final')
+        frete = dados.get('frete')
+
+        id_tipo_entrega = dados.get('id_tipo_entrega')
+        tipo_entrega = Tipo_entrega.objects.get(id_tipo_entrega=id_tipo_entrega)
+
+        id_tipo_pagamento = dados.get('id_tipo_pagamento')
+        tipo_pagamento = TipoPagamento.objects.get(id_tipo_pagamento=id_tipo_pagamento)
+
+        data = {
+            'usuario': serializers.serialize('json', [usuario]),
+            'comanda': serializers.serialize('json', [comanda]),
+            'restaurante': serializers.serialize('json', [restaurante]),
+            'status': status,
+            'valor_final': valor_final,
+            'frete': frete,
+            'tipo_entrega': serializers.serialize('json', [tipo_entrega]),
+            'tipo_pagamento': serializers.serialize('json', [tipo_pagamento]),
+        }
+
+        return Response(data)
     
 class PedidoUpdateView(APIView):
     def put(self, request, id_pedido):
@@ -363,3 +408,4 @@ class BuscaView(APIView):
         }
         
         return Response(data)
+    

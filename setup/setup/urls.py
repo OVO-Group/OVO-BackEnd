@@ -69,13 +69,13 @@ urlpatterns = [
 #verificação de login
     path('login/verificacao', VerificaCodigo.as_view(), name='verifica_codigo'),
 
-    path('comanda/<id_comanda>', ComandaListView.as_view(), name='comanda'),
+    #path('comanda/<id_comanda>', ComandaListView.as_view(), name='comanda'),
 
     path('comanda/criar', ComandaCreateView.as_view(), name='cria_comanda'),
 
-    path('comanda/editar/<id_comanda>', ComandaUpdateView.as_view(), name='edita_comanda'),
+    #path('comanda/editar/<id_comanda>', ComandaUpdateView.as_view(), name='edita_comanda'),
 
-    path('comanda/deletar/<id_comanda>', ComandaDeleteView.as_view(), name='deleta_comanda'),
+    #path('comanda/deletar/<id_comanda>', ComandaDeleteView.as_view(), name='deleta_comanda'),
 
     path('tipo_pagamento/', TipoPagamentoListView.as_view(), name='tipo_pagamento'),
 
@@ -85,17 +85,18 @@ urlpatterns = [
 
     path('tipo_pagamento/deletar/<id_tipo_pagamento>', TipoPagamentoDeleteView.as_view(), name='deletar_tipo_pagamento'),
 
-    path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
+    #path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
 
     path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
 
-    path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
+    #path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
 
-    path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
+    #path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
 
     path('tipo_entrega/', TipoEntregaListView.as_view(), name='tipo_entrega'),
 
-    path('busca/<str:busca>', BuscaView.as_view(), name='busca')
+    path('busca/<str:busca>', BuscaView.as_view(), name='busca'),
+
 
 
 
