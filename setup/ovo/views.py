@@ -348,3 +348,18 @@ class TipoEntregaListView(APIView):
         serializer = TipoEntregaSerializer(tipo_entrega, many=True)
 
         return Response(serializer.data)
+    
+class BuscaView(APIView):
+    def get(self, request, busca):
+        restaurantes = Restaurante.objects.filter(nome_restaurante__icontains=busca)
+        produtos = Produto.objects.filter(nome__icontains=busca)
+        
+        serializer_restaurantes = RestauranteSerializer(restaurantes, many=True)
+        serializer_produtos = ProdutoSerializer(produtos, many=True)
+
+        data = {
+            'restaurantes': serializer_restaurantes.data,
+            'produtos': serializer_produtos.data
+        }
+        
+        return Response(data)
