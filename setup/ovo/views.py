@@ -16,8 +16,8 @@ from rest_framework.permissions import AllowAny
     
 
 class UserListView(APIView):
-    def get(self, request, email):
-        user = get_object_or_404(Usuario, email = email)
+    def get(self, request, id_usuario):
+        user = get_object_or_404(Usuario, id_usuario = id_usuario)
         serializer = UsuarioSerializer(user)
         
         return Response(serializer.data)

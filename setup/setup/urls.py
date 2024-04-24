@@ -20,7 +20,7 @@ urlpatterns = [
 #Admin
     path('admin/', admin.site.urls),
 #listar usuário por id usuário
-    path('listar/<str:email>', UserListView.as_view(), name='usuario_list'),
+    path('listar/<int:id_usuario>', UserListView.as_view(), name='usuario_list'),
 #cadastrar usuário
     path('cadastrar/', UserCreateView.as_view(), name='usuario_cadastro'),
 #atualizar usuário por id usuário
