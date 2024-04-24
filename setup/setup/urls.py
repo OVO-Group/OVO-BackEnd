@@ -9,7 +9,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
-    GetEnderecoView
+    GetEnderecoView, TipoEntregaListView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -77,7 +77,7 @@ urlpatterns = [
 
     path('comanda/deletar/<id_comanda>', ComandaDeleteView.as_view(), name='deleta_comanda'),
 
-    path('tipo_pagamento/<id_tipo_pagamento>', TipoPagamentoListView.as_view(), name='tipo_pagamento'),
+    path('tipo_pagamento/', TipoPagamentoListView.as_view(), name='tipo_pagamento'),
 
     path('tipo_pagamento/criar', TipoPagamentoCreateVIew.as_view(), name='criar_tipo_pagamento'),
 
@@ -92,6 +92,8 @@ urlpatterns = [
     path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
 
     path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
+
+    path('tipo_entrega/', TipoEntregaListView.as_view(), name='tipo_entrega'),
 
 
 

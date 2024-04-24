@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido
+from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,3 +41,9 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = ['id_pedido', 'id_usuario', 'id_restaurante', 'id_tipo_entrega', 'valor_final', 'frete', 'id_tipo_pagamento', 'id_comanda']
+
+
+class TipoEntregaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tipo_entrega
+        fields = ['id_tipo_entrega', 'nome_tipo_entrega', 'tarifa']

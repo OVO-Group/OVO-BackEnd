@@ -1,6 +1,6 @@
-from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido
+from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer, TipoEntregaSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -284,9 +284,9 @@ class ComandaDeleteView(APIView):
     
 
 class TipoPagamentoListView(APIView):
-    def get(self, request, id_tipo_pagamento):
-        tipo_pagamento = get_object_or_404(TipoPagamento, id_tipo_pagamento=id_tipo_pagamento)
-        serializer = TipoPagamentoSerializer(tipo_pagamento)
+    def get(self, request):
+        tipo_pagamento = TipoPagamento.objects.all()
+        serializer = TipoPagamentoSerializer(tipo_pagamento, many=True)
 
         return Response(serializer.data)
     
@@ -342,3 +342,9 @@ class PedidoDeleteView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
+class TipoEntregaListView(APIView):
+    def get(self, request):
+        tipo_entrega = Tipo_entrega.objects.all()
+        serializer = TipoEntregaSerializer(tipo_entrega, many=True)
+
+        return Response(serializer.data)
