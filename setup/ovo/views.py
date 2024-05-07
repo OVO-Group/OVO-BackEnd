@@ -334,6 +334,8 @@ class PedidoCreateView(APIView):
         serializer.is_valid(raise_exception="True")
         serializer.save()
 
+        id_pedido = serializer.data.get('id_pedido')
+
 
         dados = request.data
 
@@ -359,6 +361,7 @@ class PedidoCreateView(APIView):
         tipo_pagamento = TipoPagamento.objects.get(id_tipo_pagamento=id_tipo_pagamento)
 
         data = {
+            'id_pedido' : id_pedido,
             'usuario': serializers.serialize('json', [usuario]),
             'comanda': serializers.serialize('json', [comanda]),
             'restaurante': serializers.serialize('json', [restaurante]),
@@ -374,11 +377,11 @@ class PedidoCreateView(APIView):
 class PedidoUpdateView(APIView):
     def put(self, request, id_pedido):
         pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-        serializer = PedidoSerializer(pedido, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        novo_status = "concluido"
+        pedido.status = novo_status
+        pedido.save()
+        serializer = PedidoSerializer(pedido)
+        return Response(serializer.data)
     
 class PedidoDeleteView(APIView):
     def delete(self, request, id_pedido):
