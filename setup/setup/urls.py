@@ -89,6 +89,8 @@ urlpatterns = [
 
     path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
 
+    path('concluir/<int:id_pedido>', PedidoUpdateView.as_view(), name="Concluir_pedido"),
+
     #path('pedido/editar/<id_produto>', PedidoUpdateView.as_view(), name='editar_pedido'),
 
     #path('produto/deletar/<id_produto>', PedidoDeleteView.as_view(), name='deletar_pedido'),
