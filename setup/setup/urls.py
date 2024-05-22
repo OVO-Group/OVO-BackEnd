@@ -9,7 +9,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
-    GetEnderecoView, TipoEntregaListView, BuscaView
+    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -52,7 +52,9 @@ urlpatterns = [
     path('restaurante/deletar/<int:id_restaurante>', RestauranteDeleteView.as_view(), name="Deletar_restaurante"), 
 #Editar restaurante
     path('restaurante/editar/<int:id_restaurante>', RestauranteEditView.as_view(), name='Editar_restaurante'),
-#listar produtos
+#listar todos os produtos 
+    path('produtos/todos', ProdutoListAll.as_view(), name='produtos_todos'),
+#listar produtos por id do restaurante
     path('produtos/<int:id_restaurante>', ProdutoListView.as_view(), name='produtos'),
 #listar um produto específico
     path('produto/<int:id_produto>', GetProdutoView.as_view(), name='get_produto'),

@@ -206,6 +206,13 @@ class RestauranteEditView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ProdutoListAll(APIView):
+    def get(self, request):
+        produto = Produto.objects.all()
+        serializer = ProdutoSerializer(produto, many=True)
+        return Response(serializer.data)
+        
+
 class GetProdutoView(APIView):
     def get(self, request, id_produto):
         produto = get_object_or_404(Produto, id_produto=id_produto)
