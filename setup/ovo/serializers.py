@@ -62,3 +62,11 @@ class TipoEntregaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tipo_entrega
         fields = ['id_tipo_entrega', 'nome_tipo_entrega', 'tarifa']
+
+class RelatorioPedidoSerializer(serializers.ModelSerializer):
+    nome_usuario = serializers.CharField(source='id_usuario.first_name')
+    nome_restaurante = serializers.CharField(source='id_restaurante.nome_restaurante')
+    id_tipo_entrega = serializers.CharField(source='id_tipo_entrega.nome_tipo_entrega')
+    class Meta:
+        model = Pedido
+        fields = ['nome_usuario', 'nome_restaurante', 'id_pedido', 'valor_final', 'id_tipo_entrega', 'frete']

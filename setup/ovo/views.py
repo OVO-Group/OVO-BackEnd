@@ -1,6 +1,6 @@
 from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer, TipoEntregaSerializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer, TipoEntregaSerializer, RelatorioPedidoSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -519,3 +519,8 @@ class BuscaView(APIView):
         
         return Response(data)
     
+class RelatorioTotalPagoPedidoView(APIView):
+    def get(self, request):
+        pedidos = Pedido.objects.all()
+        serializer = RelatorioPedidoSerializer(pedidos, many=True)
+        return Response(serializer.data)

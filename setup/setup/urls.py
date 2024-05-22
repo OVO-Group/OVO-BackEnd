@@ -9,7 +9,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
-    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll
+    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -102,8 +102,8 @@ urlpatterns = [
     path('busca/<str:busca>', BuscaView.as_view(), name='busca'),
 
 
-
-
+    #Relatorio de preço de pedidos
+    path('relatorio/pedidos', RelatorioTotalPagoPedidoView.as_view(), name='relatorio_pedido_list')
 
 ]
 
