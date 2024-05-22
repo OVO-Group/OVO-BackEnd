@@ -10,7 +10,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
     GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView,\
-    PedidosAbertosRestaurante
+    PedidosAbertosRestaurante, EnviaEmailView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -105,7 +105,7 @@ urlpatterns = [
     path('status/', EnviaEmailView.as_view(), name='Envia email'),
 
     #Relatorio de preço de pedidos
-    path('relatorio/pedidos', RelatorioTotalPagoPedidoView.as_view(), name='relatorio_pedido_list')
+    path('relatorio/pedidos', RelatorioTotalPagoPedidoView.as_view(), name='relatorio_pedido_list'),
     
     path('pedidosabertos/<int:id_restaurante>', PedidosAbertosRestaurante.as_view(), name='Pedido_aberto')
 ]
