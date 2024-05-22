@@ -472,6 +472,9 @@ class PedidoCreateView(APIView):
             'tipo_pagamento': serializers.serialize('json', [tipo_pagamento]),
         }
 
+        Pedido.objects.filter(id_comanda=None).delete()
+                
+
         return Response(data)
     
 class PedidoUpdateView(APIView):
@@ -511,4 +514,60 @@ class BuscaView(APIView):
         }
         
         return Response(data)
+    
+class EnviaEmailView(APIView):
+    def post(self,request):
+        print(request.data)
+        subject = 'Atualização do pedido'
+        html_message = f"""
+        <html>
+        <head>
+            <title>{request.data.get('title')}</title>
+        </head>
+        <body>
+            <h2>{request.data.get('h2')}</h2>
+            <p>{request.data.get('p')}</p>
+        </body>
+        </html>
+        """
+        recipient_email = request.data.get('email')
+
+        plain_message = strip_tags(html_message)
+        from_email = "gabrielduartecarneiro@gmail.com"
+        send_mail(subject, plain_message, from_email, [recipient_email], html_message=html_message)
+
+        data = {
+            'Status' : 'Enviado'
+        }
+    
+        return Response(data)
+    
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Pedido, Comanda
+from .serializers import PedidoSerializer, ComandaSerializer
+
+class PedidosAbertosRestaurante(APIView):
+    def get(self, request, id_restaurante):
+        pedidos = Pedido.objects.filter(status="Ativo", id_restaurante=id_restaurante)
+        
+        pedidos_completos = []
+        
+        for pedido in pedidos:
+            pedido_serializer = PedidoSerializer(pedido)
+            
+            comanda = pedido.id_comanda
+            comanda_serializer = ComandaSerializer(comanda)
+            
+            pedido_completo = {
+                'id_pedido': pedido.id_pedido,
+                'pedido': pedido_serializer.data,
+                'produtos': comanda_serializer.data['produtos']  
+            }
+            
+            pedidos_completos.append(pedido_completo)
+        
+        return Response(pedidos_completos)
+
+
     
