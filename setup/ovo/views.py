@@ -527,6 +527,7 @@ class RelatorioTotalPagoPedidoView(APIView):
         pedidos = Pedido.objects.all()
         serializer = RelatorioPedidoSerializer(pedidos, many=True)
         return Response(serializer.data)
+    
 class EnviaEmailView(APIView):
     def post(self,request):
         print(request.data)

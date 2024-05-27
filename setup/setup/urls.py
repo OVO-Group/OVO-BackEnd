@@ -9,8 +9,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
-    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView,\
-    PedidosAbertosRestaurante, EnviaEmailView
+    GetEnderecoView, TipoEntregaListView, BuscaView, PedidosAbertosRestaurante, ProdutoListAll, RelatorioTotalPagoPedidoView, EnviaEmailView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
