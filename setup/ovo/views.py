@@ -598,9 +598,9 @@ class CartaoListView(APIView):
         serializer = CartaoSerializer(cartao)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-# class GetRestauranteView(APIView):
-#     def get(self, request, id_restaurante):
-#         restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
-#         serializer = RestauranteSerializer(restaurante)
-#         return Response(serializer.data)
+class CartaoCreateView(APIView):
+    def post(self, request):
+        serializer = CartaoSerializer(data=request.data)
+        serializer.is_valid(raise_exception='True')
+        serializer.save()
+        return Response(serializer.data)
