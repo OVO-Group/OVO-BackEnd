@@ -95,7 +95,18 @@ class TipoPagamento(models.Model):
 class Comanda(models.Model):
     id_comanda = models.AutoField(primary_key=True)
     produtos = models.JSONField(null=False, blank=False, default=dict)
+
     
+class Cartao(models.Model):
+    id_cartao = models.AutoField(primary_key=True)
+    numero_cartao = models.CharField(max_length=16, blank=False, null=False)
+    nome_titular = models.CharField(max_length=45, blank=False, null=False)
+    data_validade = models.DateField(null=False, blank=False)
+    cvv = models.CharField(max_length=3, blank=False, null=False)
+    apelido_cartao = models.CharField(max_length=45, null=False, blank=False)
+    cpf_cnpj_titular = models.CharField(max_length=14, null=False, blank=False)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
 class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
     id_usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
@@ -106,7 +117,8 @@ class Pedido(models.Model):
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
     id_comanda = models.ForeignKey(Comanda, null = True ,on_delete = models.CASCADE)
     status = models.CharField(max_length=30, null=False, blank=False, default='Inativo')
-
+    id_cartao = models.ForeignKey(Cartao, blank=True, null=True, on_delete = models.CASCADE)
+    
     def __str__(self):
         return self.valor_final
 

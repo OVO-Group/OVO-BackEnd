@@ -1,6 +1,6 @@
-from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega
+from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega, Cartao
 from rest_framework import viewsets, status
-from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer, TipoEntregaSerializer, RelatorioPedidoSerializer
+from .serializers import UsuarioSerializer, EnderecoSerializer, LoginEmailSeializer, LoginCelularSeializer, RestauranteSerializer, ProdutoSerializer, ComandaSerializer, TipoPagamentoSerializer, PedidoSerializer, TipoEntregaSerializer, RelatorioPedidoSerializer, CartaoSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -584,3 +584,23 @@ class PedidosAbertosRestaurante(APIView):
 
 
     
+#View para listar os cartoes do usuario
+class CartaoUsuarioListView(APIView):
+    def get(self, request, id_usuario):
+        cartao = Cartao.objects.filter(id_usuario=id_usuario)
+        serializer = CartaoSerializer(cartao, many=True)
+        return Response(serializer.data)
+
+#View para listar cartao
+class CartaoListView(APIView):
+    def get(self, request, id_cartao):
+        cartao = get_object_or_404(Cartao, id_cartao=id_cartao)
+        serializer = CartaoSerializer(cartao)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# class GetRestauranteView(APIView):
+#     def get(self, request, id_restaurante):
+#         restaurante = get_object_or_404(Restaurante, id_restaurante=id_restaurante)
+#         serializer = RestauranteSerializer(restaurante)
+#         return Response(serializer.data)

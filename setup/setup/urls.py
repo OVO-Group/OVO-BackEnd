@@ -9,7 +9,8 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ProdutoEditView, GetProdutoView, ComandaListView, ComandaCreateView, ComandaUpdateView,\
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
-    GetEnderecoView, TipoEntregaListView, BuscaView, PedidosAbertosRestaurante, ProdutoListAll, RelatorioTotalPagoPedidoView, EnviaEmailView
+    GetEnderecoView, TipoEntregaListView, BuscaView, PedidosAbertosRestaurante, ProdutoListAll, RelatorioTotalPagoPedidoView, EnviaEmailView,\
+    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView, CartaoListView, CartaoUsuarioListView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -106,7 +107,13 @@ urlpatterns = [
     #Relatorio de preço de pedidos
     path('relatorio/pedidos', RelatorioTotalPagoPedidoView.as_view(), name='relatorio_pedido_list'),
     
-    path('pedidosabertos/<int:id_restaurante>', PedidosAbertosRestaurante.as_view(), name='Pedido_aberto')
+    path('pedidosabertos/<int:id_restaurante>', PedidosAbertosRestaurante.as_view(), name='Pedido_aberto'),
+
+    #cartao por id de usuario
+    path('cartao-usuario/<int:id_usuario>', CartaoUsuarioListView.as_view(), name='cartao_usuario'),
+
+    #cartao especifico
+    path('cartao/<int:id_cartao>', CartaoListView.as_view(), name='cartao_list')
 ]
 
 
