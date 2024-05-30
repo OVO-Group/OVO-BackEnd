@@ -369,6 +369,7 @@ class PedidoCreateView(APIView):
 
         def gerar_nota(recipient_email):
             pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+            endereco = get_object_or_404(Endereco, id_restaurante=pedido.id_restaurante)
             produtos = pedido.id_comanda.produtos
             subject = 'Nota fiscal eletrônica'
             html_message = f"""
@@ -393,7 +394,7 @@ class PedidoCreateView(APIView):
                     </tr>
                     <tr>
                         <th>Endereco Emitente</th>
-                        <th>{pedido.id_restaurante.endereco}</th>
+                        <th>{endereco.logradouro}, {endereco.numero}</th>
                     </tr>
                     <tr>
                         <th>Destinatário</th>

@@ -90,7 +90,7 @@ urlpatterns = [
 
     path('tipo_pagamento/deletar/<id_tipo_pagamento>', TipoPagamentoDeleteView.as_view(), name='deletar_tipo_pagamento'),
 
-    #path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
+    path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
 
     path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
 
