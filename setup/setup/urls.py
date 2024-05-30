@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
-    EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
-    LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
+    EnderecoUsuarioListView, EnderecoRestauranteListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
+    LoginCelularView, LoginEmailView, RestauranteListView,\
     ProdutoListView, VerificaCodigo, VerificaEmail,\
     ProdutoListView, VerificaCodigo, GetRestauranteView, RestauranteCreateView,\
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
@@ -10,7 +10,9 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     ComandaDeleteView, TipoPagamentoListView, TipoPagamentoCreateVIew, TipoPagamentoUpdateView,\
     TipoPagamentoDeleteView, PedidoListView, PedidoCreateView, PedidoUpdateView, PedidoDeleteView,\
     GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView,\
-    PedidosAbertosRestaurante, EnviaEmailView, RelatorioTipoPagamento
+    PedidosAbertosRestaurante, EnviaEmailView, RelatorioTipoPagamento,\
+    GetEnderecoView, TipoEntregaListView, BuscaView, PedidosAbertosRestaurante, ProdutoListAll, RelatorioTotalPagoPedidoView, EnviaEmailView,\
+    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView, CartaoListView, CartaoUsuarioListView, CartaoCreateView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -30,9 +32,11 @@ urlpatterns = [
     path('deletar/<int:id_usuario>', UserDeleteView.as_view(), name='usuario_deleta'),
 #listar endereço por id endereço
     #path('listar/endereco/<int:id_endereco>', EnderecoListView.as_view(), name='endereco_list'),
-    path('getendereco/<int:id_endereco>', GetEnderecoView.as_view(), name='get_endereco'),
+    path('endereco/<int:id_endereco>', GetEnderecoView.as_view(), name='get_endereco'),
+#listar endereço por id restaurante
+    path('endereco-restaurante/<int:id_restaurante>', EnderecoRestauranteListView.as_view(), name='endereco_list'),
 #listar endereço por id usuário
-    path('endereco/<str:email>', EnderecoListView.as_view(), name='endereco_list'),
+    path('endereco-usuario/<int:id_usuario>', EnderecoUsuarioListView.as_view(), name='endereco_list'),
 #cadastrar endereco
     path('cadastrar/endereco', EnderecoCreateView.as_view(), name='endereco_cadastro'),
 #atualizar endereco por id endereco
@@ -109,7 +113,15 @@ urlpatterns = [
     
     path('pedidosabertos/<int:id_restaurante>', PedidosAbertosRestaurante.as_view(), name='Pedido_aberto'),
 
-    path('relatorio/tipo_pagamento', RelatorioTipoPagamento.as_view(), name='relatorio_tipo_pagamento')
+    path('relatorio/tipo_pagamento', RelatorioTipoPagamento.as_view(), name='relatorio_tipo_pagamento'),
+    #cartao por id de usuario
+    path('cartao-usuario/<int:id_usuario>', CartaoUsuarioListView.as_view(), name='cartao_usuario'),
+
+    #cartao especifico
+    path('cartao/<int:id_cartao>', CartaoListView.as_view(), name='cartao_list'),
+
+    #Criar Cartao
+    path('cartao/criar', CartaoCreateView.as_view(), name='cartao_create'),
 ]
 
 

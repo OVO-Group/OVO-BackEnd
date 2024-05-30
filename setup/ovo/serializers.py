@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega
+from .models import Usuario, Endereco, Restaurante, Produto, Comanda, TipoPagamento, Pedido, Tipo_entrega, Cartao
 from django.db.models.fields import DecimalField
 from decimal import Decimal
 from django.forms.models import model_to_dict
@@ -12,18 +12,18 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endereco
-        fields = ['id_endereco', 'nome_da_rua', 'numero', 'complemento', 'ponto_de_referencia', 'favorito', 'id_usuario']
+        fields = ['id_endereco', 'logradouro', 'bairro', 'cidade', 'uf', 'pais', 'numero', 'complemento', 'cep', 'ponto_de_referencia', 'tipo_endereco', 'id_usuario', 'id_restaurante']
 
-class LoginEmailSeializer(serializers.Serializer): ###
+class LoginEmailSeializer(serializers.Serializer):
     email = serializers.EmailField()
 
-class LoginCelularSeializer(serializers.Serializer): ###
+class LoginCelularSeializer(serializers.Serializer):
     celular = serializers.CharField()
 
 class RestauranteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurante
-        fields = ['id_restaurante', 'nome_restaurante', 'sobre', 'endereco', 'cnpj', 'horario_funcionamento', 'id_tipo_entrega']
+        fields = ['id_restaurante', 'nome_restaurante', 'sobre', 'cnpj', 'horario_funcionamento', 'id_tipo_entrega']
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,7 +55,7 @@ class TipoPagamentoSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
-        fields = ['id_pedido', 'id_usuario', 'id_restaurante', 'id_tipo_entrega', 'valor_final', 'frete', 'id_tipo_pagamento', 'id_comanda', 'status']
+        fields = ['id_pedido', 'id_usuario', 'id_restaurante', 'id_tipo_entrega', 'valor_final', 'frete', 'id_tipo_pagamento', 'id_comanda', 'status', 'id_cartao']
 
 
 class TipoEntregaSerializer(serializers.ModelSerializer):
@@ -77,3 +77,7 @@ class RelatorioTipoPagamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = ['nome_restaurante','tipo_pagamento', 'valor_final', 'data', 'id_pedido']
+class CartaoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cartao
+        fields = ['id_cartao', 'numero_cartao', 'data_validade', 'cvv', 'cpf_cnpj_titular', 'apelido_cartao', 'id_usuario']

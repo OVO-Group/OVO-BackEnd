@@ -41,17 +41,7 @@ class Usuario(AbstractUser):
         related_name='custom_user_permissions'  # Define um related_name personalizado
     )
 
-class Endereco(models.Model):
-    id_endereco = models.AutoField(primary_key=True)
-    nome_da_rua = models.CharField(max_length = 100, null = False, blank = False)
-    numero = models.CharField(max_length = 7, null = False)
-    complemento = models.CharField(max_length = 45, null = True, blank = True)
-    ponto_de_referencia = models.CharField(max_length = 100, null = True, blank = True)
-    favorito = models.BinaryField()
-    id_usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
 
-    def __str__(self):
-        return self.nome_da_rua
 
 class Tipo_entrega(models.Model):
     id_tipo_entrega = models.AutoField(primary_key=True)
@@ -65,7 +55,6 @@ class Restaurante(models.Model):
     id_restaurante = models.AutoField(primary_key=True)
     nome_restaurante = models.CharField(max_length = 50, null = False, blank = False)
     sobre = models.CharField(max_length = 200, null = True, blank = True)
-    endereco = models.CharField(max_length = 100, null = False)
     cnpj = models.CharField(max_length = 14, null = False)
     horario_funcionamento = models.CharField(max_length = 150, null = False, blank = True)
     id_tipo_entrega = models.ForeignKey(Tipo_entrega, on_delete = models.CASCADE, null = True)
@@ -73,7 +62,23 @@ class Restaurante(models.Model):
     def __str__(self):
         return self.nome_restaurante
 
-
+class Endereco(models.Model):
+    id_endereco = models.AutoField(primary_key=True)
+    logradouro = models.CharField(max_length = 100, null = False, blank = False)
+    bairro = models.CharField(max_length = 45, null = False, blank = False)
+    cidade = models.CharField(max_length = 45, null = False, blank = False)
+    uf = models.CharField(max_length = 2, null = False, blank = False)
+    pais = models.CharField(max_length = 2, null = False, blank = False)
+    numero = models.CharField(max_length = 10, null = False)
+    complemento = models.CharField(max_length = 45, null = True, blank = True)
+    cep = models.CharField(max_length = 8, null = False)
+    ponto_de_referencia = models.CharField(max_length = 100, null = True, blank = True)
+    tipo_endereco = models.CharField(max_length=45, null=False, blank=False, default='Residencial')
+    id_usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE, blank=True, null=True)
+    id_restaurante = models.ForeignKey(Restaurante, on_delete = models.CASCADE, blank=True, null=True)
+    def __str__(self):
+        return self.logradouro
+    
 class Produto(models.Model):
     id_produto = models.AutoField(primary_key=True)
     nome = models.CharField(max_length = 45, null = False)
@@ -95,7 +100,18 @@ class TipoPagamento(models.Model):
 class Comanda(models.Model):
     id_comanda = models.AutoField(primary_key=True)
     produtos = models.JSONField(null=False, blank=False, default=dict)
+
     
+class Cartao(models.Model):
+    id_cartao = models.AutoField(primary_key=True)
+    numero_cartao = models.CharField(max_length=16, blank=False, null=False)
+    nome_titular = models.CharField(max_length=45, blank=False, null=False)
+    data_validade = models.DateField(null=False, blank=False)
+    cvv = models.CharField(max_length=3, blank=False, null=False)
+    apelido_cartao = models.CharField(max_length=45, null=False, blank=False)
+    cpf_cnpj_titular = models.CharField(max_length=14, null=False, blank=False)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
 class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
     id_usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
@@ -108,6 +124,8 @@ class Pedido(models.Model):
     status = models.CharField(max_length=30, null=False, blank=False, default='Inativo')
     data = models.DateField(null=False, blank=False, default='2024-05-12')
 
+    id_cartao = models.ForeignKey(Cartao, blank=True, null=True, on_delete = models.CASCADE)
+    
     def __str__(self):
         return self.valor_final
 
