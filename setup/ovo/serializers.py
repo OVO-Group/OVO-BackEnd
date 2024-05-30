@@ -70,3 +70,10 @@ class RelatorioPedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = ['nome_usuario', 'nome_restaurante', 'id_pedido', 'valor_final', 'id_tipo_entrega', 'frete']
+
+class RelatorioTipoPagamentoSerializer(serializers.ModelSerializer):
+    nome_restaurante = serializers.CharField(source='id_restaurante.nome_restaurante')
+    tipo_pagamento = serializers.CharField(source='id_tipo_pagamento.nome')
+    class Meta:
+        model = Pedido
+        fields = ['nome_restaurante','tipo_pagamento', 'valor_final', 'data', 'id_pedido']

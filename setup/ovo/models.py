@@ -106,6 +106,7 @@ class Pedido(models.Model):
     id_tipo_pagamento= models.ForeignKey(TipoPagamento, on_delete = models.CASCADE)
     id_comanda = models.ForeignKey(Comanda, null = True ,on_delete = models.CASCADE)
     status = models.CharField(max_length=30, null=False, blank=False, default='Inativo')
+    data = models.DateField(null=False, blank=False, default='2024-05-12')
 
     def __str__(self):
         return self.valor_final
