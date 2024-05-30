@@ -55,7 +55,7 @@ class TipoPagamentoSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
-        fields = ['id_pedido', 'id_usuario', 'id_restaurante', 'id_tipo_entrega', 'valor_final', 'frete', 'id_tipo_pagamento', 'id_comanda', 'status', 'id_cartao']
+        fields = ['id_pedido', 'id_usuario', 'id_restaurante', 'id_tipo_entrega', 'valor_final', 'frete', 'id_tipo_pagamento', 'id_comanda', 'status', 'id_cartao', 'data']
 
 
 class TipoEntregaSerializer(serializers.ModelSerializer):

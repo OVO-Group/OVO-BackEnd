@@ -337,12 +337,14 @@ class PedidoListView(APIView):
     
 class PedidoCreateView(APIView):
     def post(self, request):
+        print('entrou')
         serializer = PedidoSerializer(data=request.data)
         print(serializer)
         serializer.is_valid(raise_exception="True")
         serializer.save()
 
         id_pedido = serializer.data.get('id_pedido')
+        print(id_pedido)
 
         dados = request.data
 
@@ -350,7 +352,6 @@ class PedidoCreateView(APIView):
         usuario = Usuario.objects.get(id_usuario=id_usuario)
 
         id_comanda = dados.get('id_comanda')
-        print(id_comanda)
         comanda = Comanda.objects.get(id_comanda=id_comanda)
 
         id_restaurante = dados.get('id_restaurante')
@@ -369,7 +370,7 @@ class PedidoCreateView(APIView):
 
         def gerar_nota(recipient_email):
             pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-            endereco = get_object_or_404(Endereco, id_restaurante=pedido.id_restaurante)
+            #endereco = get_object_or_404(Endereco, id_restaurante=id_restaurante)
             produtos = pedido.id_comanda.produtos
             subject = 'Nota fiscal eletrônica'
             html_message = f"""
@@ -394,7 +395,6 @@ class PedidoCreateView(APIView):
                     </tr>
                     <tr>
                         <th>Endereco Emitente</th>
-                        <th>{endereco.logradouro}, {endereco.numero}</th>
                     </tr>
                     <tr>
                         <th>Destinatário</th>

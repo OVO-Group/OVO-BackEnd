@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path
+from ovo.views import PedidoCreateView
+
 from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
     EnderecoUsuarioListView, EnderecoRestauranteListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
     LoginCelularView, LoginEmailView, RestauranteListView,\
@@ -17,6 +19,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 urlpatterns = [
+    path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
 #rotas para gerar token jwt
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -94,7 +97,7 @@ urlpatterns = [
 
     path('pedido/<id_produto>', PedidoListView.as_view(), name='pedido'),
 
-    path('pedido/criar', PedidoCreateView.as_view(), name='criar_pedido'),
+   
 
     path('concluir/<int:id_pedido>', PedidoUpdateView.as_view(), name="Concluir_pedido"),
 
