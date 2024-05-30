@@ -68,12 +68,16 @@ class GetEnderecoView(APIView):
         serializer = EnderecoSerializer(endereco)
         return Response(serializer.data)
 
-class EnderecoListView(APIView):
-    def get(self, request, email):
-        print(email)
-        usuario = Usuario.objects.get(email = email)
-        enderecos = Endereco.objects.filter(id_usuario = usuario.id_usuario)
-        serializer = EnderecoSerializer(enderecos, many = True)
+class EnderecoUsuarioListView(APIView):
+    def get(self, request, id_usuario):
+        endereco = Endereco.objects.filter(id_usuario=id_usuario)
+        serializer = EnderecoSerializer(endereco, many=True)
+        return Response(serializer.data)
+
+class EnderecoRestauranteListView(APIView):
+    def get(self, request, id_restaurante):
+        restaurante = get_object_or_404(Endereco, id_restaurante = id_restaurante)
+        serializer = EnderecoSerializer(restaurante)
         return Response(serializer.data)
     
 class EnderecoCreateView(APIView):
@@ -163,14 +167,6 @@ class LoginCelularView(APIView):
         
         #Autenticação com Twilio
 
-
-class EnderecoUsuarioListView(APIView):
-    def get(self, request, id_usuario):
-        enderecos = Endereco.objects.filter(id_usuario=id_usuario)
-        serializer = EnderecoSerializer(enderecos, many=True)
-        print(serializer)
-        
-        return Response(serializer.data)
 
 class RestauranteListView(APIView):
     def get(self, request):

@@ -12,18 +12,18 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endereco
-        fields = ['id_endereco', 'nome_da_rua', 'numero', 'complemento', 'ponto_de_referencia', 'favorito', 'id_usuario']
+        fields = ['id_endereco', 'logradouro', 'bairro', 'cidade', 'uf', 'pais', 'numero', 'complemento', 'cep', 'ponto_de_referencia', 'tipo_endereco', 'id_usuario', 'id_restaurante']
 
-class LoginEmailSeializer(serializers.Serializer): ###
+class LoginEmailSeializer(serializers.Serializer):
     email = serializers.EmailField()
 
-class LoginCelularSeializer(serializers.Serializer): ###
+class LoginCelularSeializer(serializers.Serializer):
     celular = serializers.CharField()
 
 class RestauranteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurante
-        fields = ['id_restaurante', 'nome_restaurante', 'sobre', 'endereco', 'cnpj', 'horario_funcionamento', 'id_tipo_entrega']
+        fields = ['id_restaurante', 'nome_restaurante', 'sobre', 'cnpj', 'horario_funcionamento', 'id_tipo_entrega']
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:

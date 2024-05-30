@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteView,\
-    EnderecoListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
-    LoginCelularView, LoginEmailView ,EnderecoUsuarioListView, RestauranteListView,\
+    EnderecoUsuarioListView, EnderecoRestauranteListView, EnderecoCreateView, EnderecoUpdateView, EnderecoDeleteView,\
+    LoginCelularView, LoginEmailView, RestauranteListView,\
     ProdutoListView, VerificaCodigo, VerificaEmail,\
     ProdutoListView, VerificaCodigo, GetRestauranteView, RestauranteCreateView,\
     RestauranteDeleteView, RestauranteEditView, ProdutoCreateView, ProdutoDeleteView,\
@@ -30,9 +30,11 @@ urlpatterns = [
     path('deletar/<int:id_usuario>', UserDeleteView.as_view(), name='usuario_deleta'),
 #listar endereço por id endereço
     #path('listar/endereco/<int:id_endereco>', EnderecoListView.as_view(), name='endereco_list'),
-    path('getendereco/<int:id_endereco>', GetEnderecoView.as_view(), name='get_endereco'),
+    path('endereco/<int:id_endereco>', GetEnderecoView.as_view(), name='get_endereco'),
+#listar endereço por id restaurante
+    path('endereco-restaurante/<int:id_restaurante>', EnderecoRestauranteListView.as_view(), name='endereco_list'),
 #listar endereço por id usuário
-    path('endereco/<str:email>', EnderecoListView.as_view(), name='endereco_list'),
+    path('endereco-usuario/<int:id_usuario>', EnderecoUsuarioListView.as_view(), name='endereco_list'),
 #cadastrar endereco
     path('cadastrar/endereco', EnderecoCreateView.as_view(), name='endereco_cadastro'),
 #atualizar endereco por id endereco
