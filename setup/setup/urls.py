@@ -14,7 +14,7 @@ from ovo.views import UserCreateView, UserListView, UserUpdateView, UserDeleteVi
     GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView,\
     PedidosAbertosRestaurante, EnviaEmailView, RelatorioTipoPagamento,\
     GetEnderecoView, TipoEntregaListView, BuscaView, PedidosAbertosRestaurante, ProdutoListAll, RelatorioTotalPagoPedidoView, EnviaEmailView,\
-    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView, CartaoListView, CartaoUsuarioListView, CartaoCreateView
+    GetEnderecoView, TipoEntregaListView, BuscaView, ProdutoListAll, RelatorioTotalPagoPedidoView, CartaoListView, CartaoUsuarioListView, CartaoCreateView, CartaoDeleteView, CartaoUpdateView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -125,6 +125,12 @@ urlpatterns = [
 
     #Criar Cartao
     path('cartao/criar', CartaoCreateView.as_view(), name='cartao_create'),
+
+    #Deletar Cartao
+    path('deletar/cartao/<int:id_cartao>', CartaoDeleteView.as_view(), name='cartao_delete'),
+
+    #Atualizar Cartao
+    path('atualizar/cartao/<int:id_cartao>', CartaoUpdateView.as_view(), name='cartao_update'),
 ]
 
 

@@ -607,3 +607,20 @@ class CartaoCreateView(APIView):
         serializer.is_valid(raise_exception='True')
         serializer.save()
         return Response(serializer.data)
+    
+class CartaoDeleteView(APIView):
+    def delete(self, request, id_cartao):
+        cartao = get_object_or_404(Cartao, id_cartao=id_cartao)
+        cartao.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CartaoUpdateView(APIView):
+    def put(self, request, id_cartao):
+        cartao = get_object_or_404(Cartao, id_cartao=id_cartao)
+        print(request.data)
+        serializer = CartaoSerializer(cartao, data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
