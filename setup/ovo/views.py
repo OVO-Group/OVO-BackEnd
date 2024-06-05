@@ -394,9 +394,6 @@ class PedidoCreateView(APIView):
                         <th>{pedido.id_restaurante.cnpj}</th>
                     </tr>
                     <tr>
-                        <th>Endereco Emitente</th>
-                    </tr>
-                    <tr>
                         <th>Destinatário</th>
                         <th>{pedido.id_usuario.first_name}</th>
                     </tr>
@@ -430,6 +427,8 @@ class PedidoCreateView(APIView):
          
             valor_total_compra = sum(float(produto['preco']) * int(produto['quantidade']) for produto in produtos)
 
+            valor_total_compra = valor_total_compra + frete
+
            
             for produto in produtos:
                 preco_unitario = float(produto['preco'])
@@ -447,6 +446,11 @@ class PedidoCreateView(APIView):
 
         
             html_message += f"""
+                    <tr>
+                        <td colspan="3">Valor do frete</td>
+                        <td>{frete:.2f}</td>
+                    </tr>
+                
                     <tr>
                         <td colspan="3">Valor Total da Compra</td>
                         <td>{valor_total_compra:.2f}</td>
