@@ -110,7 +110,7 @@ class EnderecoDeleteView(APIView):
 def gerar_e_enviar_codigo(email):
     numeros = [str(randint(0, 9)) for _ in range(6)]
     codigo = ''.join(numeros)
-    send_mail('Código de Verificação DJANGO', f'Código de verificação é {codigo}', 'gabrielduartecarneiro@gmail.com', [email])
+    send_mail('Código de Verificação DJANGO', f'Código de verificação é {codigo}', 'ovo.impacta@gmail.com', [email])
     return codigo
 
 class LoginEmailView(APIView):
@@ -457,7 +457,7 @@ class PedidoCreateView(APIView):
             """
 
             plain_message = strip_tags(html_message)
-            from_email = "gabrielduartecarneiro@gmail.com"
+            from_email = "ovo.impacta@gmail.com"
             send_mail(subject, plain_message, from_email, [recipient_email], html_message=html_message)
         
         recipient_email = usuario.email
@@ -549,7 +549,7 @@ class EnviaEmailView(APIView):
         recipient_email = request.data.get('email')
 
         plain_message = strip_tags(html_message)
-        from_email = "gabrielduartecarneiro@gmail.com"
+        from_email = "ovo.impacta@gmail.com"
         send_mail(subject, plain_message, from_email, [recipient_email], html_message=html_message)
 
         data = {
