@@ -110,7 +110,7 @@ class EnderecoDeleteView(APIView):
 def gerar_e_enviar_codigo(email):
     numeros = [str(randint(0, 9)) for _ in range(6)]
     codigo = ''.join(numeros)
-    send_mail('Código de Verificação DJANGO', f'Código de verificação é {codigo}', 'gabrielduartecarneiro@gmail.com', [email])
+    send_mail('Código de Verificação DJANGO', f'Código de verificação é {codigo}', 'ovo.impacta@gmail.com', [email])
     return codigo
 
 class LoginEmailView(APIView):
@@ -461,7 +461,7 @@ class PedidoCreateView(APIView):
             """
 
             plain_message = strip_tags(html_message)
-            from_email = "gabrielduartecarneiro@gmail.com"
+            from_email = "ovo.impacta@gmail.com"
             send_mail(subject, plain_message, from_email, [recipient_email], html_message=html_message)
         
         recipient_email = usuario.email
@@ -553,7 +553,7 @@ class EnviaEmailView(APIView):
         recipient_email = request.data.get('email')
 
         plain_message = strip_tags(html_message)
-        from_email = "gabrielduartecarneiro@gmail.com"
+        from_email = "ovo.impacta@gmail.com"
         send_mail(subject, plain_message, from_email, [recipient_email], html_message=html_message)
 
         data = {
@@ -611,3 +611,20 @@ class CartaoCreateView(APIView):
         serializer.is_valid(raise_exception='True')
         serializer.save()
         return Response(serializer.data)
+    
+class CartaoDeleteView(APIView):
+    def delete(self, request, id_cartao):
+        cartao = get_object_or_404(Cartao, id_cartao=id_cartao)
+        cartao.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CartaoUpdateView(APIView):
+    def put(self, request, id_cartao):
+        cartao = get_object_or_404(Cartao, id_cartao=id_cartao)
+        print(request.data)
+        serializer = CartaoSerializer(cartao, data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
